@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import Navbar from "./navbar";
 
-const socket = io("http://localhost:8000", {
+const socket = io("https://elderback.onrender.com", {
     transports: ["websocket"],  // Force WebSocket
     reconnection: true, // Reconnect on failure
     reconnectionAttempts: 5,
