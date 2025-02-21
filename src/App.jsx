@@ -23,7 +23,7 @@ function App() {
             <Route path='/' element={<Signup/> } ></Route>
             <Route path='/login' element={<Login setUsername={setUsername}/> }></Route>
             <Route path='/elder-home' element={<ElderHome username={username} userType={userType}/>}></Route>
-            <Route path='/family-home' element={<FamilyHome/>}></Route>
+            <Route path='/family-home' element={<FamilyHome useType={userType}/>}></Route>
             <Route path='/chat' element={<Chat username={username}/>}></Route>
           </Routes>
         </div>

@@ -1,10 +1,10 @@
 import Navbar from "./navbar";
 import { Link } from "react-router-dom";
 
-function FamilyHome() {
+function FamilyHome({userType}) {
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar username="Family Member" />
+      <Navbar username="Family Member" userType={userType} />
       <div className="container mx-auto p-6">
         <h1 className="text-3xl font-bold text-blue-800 mb-4">Welcome to Family Dashboard</h1>
         
@@ -15,7 +15,7 @@ function FamilyHome() {
             <p className="text-gray-700">Assign and track elderly care tasks.</p>
             <Link to="/tasks" className="text-blue-600 hover:underline">Manage Tasks</Link>
           </div>
-          
+           
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold mb-2">Chat with Elderly</h2>
             <p className="text-gray-700">Stay connected with real-time messaging.</p>
