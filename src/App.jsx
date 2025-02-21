@@ -10,6 +10,7 @@ import ElderHome from './components/ElderHome'
 import Chat from './components/Chat'
 function App() {
   const [username, setUsername] = useState(""); 
+  const [userType,setUserType] = useState("");
   // useEffect(()=>{
   //   FetchTask()
   // },{});
@@ -21,7 +22,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Signup/> } ></Route>
             <Route path='/login' element={<Login setUsername={setUsername}/> }></Route>
-            <Route path='/elder-home' element={<ElderHome username={username}/>}></Route>
+            <Route path='/elder-home' element={<ElderHome username={username} userType={userType}/>}></Route>
             <Route path='/family-home' element={<FamilyHome/>}></Route>
             <Route path='/chat' element={<Chat username={username}/>}></Route>
           </Routes>

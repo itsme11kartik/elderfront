@@ -31,10 +31,12 @@ function Login({ FetchTask, setUsername }) {
                 autoClose: 3000,
                 theme: "colored",
             });
+            
 
             setUsername(res.name); // Set the username in the parent component
             const userType = res.type; // Get user type from response
             console.log("User  Type:", userType);
+            setUserType(userType);
 
             // Navigate based on user type
             if (userType === "Family") {

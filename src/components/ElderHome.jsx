@@ -1,9 +1,9 @@
 import Navbar from "./navbar";
 
-function ElderHome({ username }) {
+function ElderHome({ username,userType }) {
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar username={username} />
+      <Navbar username={username}  userType={userType}/>
 
       
       <div className="max-w-4xl mx-auto p-6 space-y-6">
