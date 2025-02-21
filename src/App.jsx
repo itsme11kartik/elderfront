@@ -1,35 +1,28 @@
-import { useState,useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Signup from './components/Signup'
-import {BrowserRouter,Route,Routes} from 'react-router-dom'
-import Login from './components/Login'
-import FamilyHome from './components/FamilyHome'
-import ElderHome from './components/ElderHome'
-import Chat from './components/Chat'
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import FamilyHome from './components/FamilyHome';
+import ElderHome from './components/ElderHome';
+import Chat from './components/Chat';
+
 function App() {
   const [username, setUsername] = useState(""); 
-  const [userType,setUserType] = useState("");
-  // useEffect(()=>{
-  //   FetchTask()
-  // },{});
+  const [userType, setUserType] = useState("");
 
   return (
     <BrowserRouter>
-     
-        <div>
-          <Routes>
-            <Route path='/' element={<Signup/> } ></Route>
-            <Route path='/login' element={<Login setUsername={setUsername} userType={userType}/> }></Route>
-            <Route path='/elder-home' element={<ElderHome username={username} userType={userType}/>}></Route>
-            <Route path='/family-home' element={<FamilyHome useType={userType}/>}></Route>
-            <Route path='/chat' element={<Chat username={username}/>}></Route>
-          </Routes>
-        </div>
-      
+      <div>
+        <Routes>
+          <Route path='/' element={<Signup />} />
+          <Route path='/login' element={<Login setUsername={setUsername} setUser Type={setUserType} />} />
+          <Route path='/elder-home' element={<ElderHome username={username} userType={userType} />} />
+          <Route path='/family-home' element={<FamilyHome userType={userType} />} />
+          <Route path='/chat' element={<Chat username={username} />} />
+        </Routes>
+      </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

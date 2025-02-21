@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Navbar({ username,userType }) {
+function Navbar({ username, userType }) {
   const [showLogout, setShowLogout] = useState(false);
   const navigate = useNavigate();
 
@@ -10,13 +10,16 @@ function Navbar({ username,userType }) {
     localStorage.removeItem("token"); // Remove JWT token from storage
     navigate("/login"); // Redirect to login page
   };
-  const Type = "";
-  if(userType==="Family"){
-    Type="/family-home";
-  }else{
-    Type="/elder-home";
+
+  // Determine the home link based on user type
+  let homeLink = "/"; // Default to root or a fallback page
+  if (userType === "Family") {
+    homeLink = "/family-home";
+  } else if (userType === "Elder") {
+    homeLink = "/elder-home";
   }
-  console.log(userType);
+
+  console.log("User  Type:", userType); // Debugging output
 
   return (
     <nav className="bg-gradient-to-r from-blue-800 to-blue-600 p-4 flex justify-between items-center shadow-lg">
@@ -34,7 +37,7 @@ function Navbar({ username,userType }) {
 
       {/* Navigation Links */}
       <div className="flex space-x-6">
-        <Link to={Type} className="text-white text-lg font-medium hover:underline">
+        <Link to={homeLink} className="text-white text-lg font-medium hover:underline">
           Home
         </Link>
         <Link to="/tasks" className="text-white text-lg font-medium hover:underline">
