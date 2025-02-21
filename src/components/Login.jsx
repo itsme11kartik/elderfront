@@ -1,49 +1,53 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login({ FetchTask,setUsername }) {
+function Login({ FetchTask, setUsername }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
     async function handleSubmit(e) {
-        e.preventDefault();
+        e.preventDefault(); // Prevent default form submission
         try {
             const response = await fetch("https://elderback.onrender.com/user/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
-    
+
             const res = await response.json();
             console.log("Response JSON:", res);
-    
+
             if (!response.ok) {
                 console.error("Login failed:", res.message);
                 toast.error(res.message || "Login failed!");
                 return; 
             }
-    
+
             toast.success("Login successful!", {
                 position: "top-right",
                 autoClose: 3000,
                 theme: "colored",
             });
-            setUsername(res.name);
-            const usertype = res.type;
-            console.log("User Type:", usertype);
-            if (usertype === "Family") {
+
+            setUsername(res.name); // Set the username in the parent component
+            const userType = res.type; // Get user type from response
+            console.log("User  Type:", userType);
+
+            // Navigate based on user type
+            if (userType === "Family") {
                 navigate("/family-home");
             } else {
                 navigate("/elder-home");
             }
-    
+
+            // Reset form fields
             setEmail("");
             setPassword("");
-    
-            if (FetchTask) FetchTask();
+
+            if (FetchTask) FetchTask(); // Call FetchTask if provided
         } catch (error) {
             console.error("Fetch Error:", error);
             toast.error("Something went wrong!", {
@@ -53,7 +57,6 @@ function Login({ FetchTask,setUsername }) {
             });
         }
     }
-    
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -83,9 +86,7 @@ function Login({ FetchTask,setUsername }) {
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
-
                     </div>
-                    {/* Submit Button */}
                     <div>
                         <button
                             type="submit"
@@ -95,7 +96,7 @@ function Login({ FetchTask,setUsername }) {
                         </button>
                     </div>
                     <div className="mt-4 text-center">
-                        <div className="-mt-[20px]" >
+                        <div className="-mt-[20px]">
                             <span className="text-sm text-gray-600">Don't have an account? </span>
                             <Link
                                 to="/"
@@ -107,8 +108,6 @@ function Login({ FetchTask,setUsername }) {
                     </div>
                 </form>
             </div>
-
-            
             <ToastContainer />
         </div>
     );

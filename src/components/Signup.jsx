@@ -1,54 +1,49 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup({ FetchTask }) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [type, setUserType] = useState("");
+    const navigate = useNavigate();
 
-    async function handleSubmit() {
-
-
+    async function handleSubmit(e) {
+        e.preventDefault(); 
         try {
             const response = await fetch("https://elderback.onrender.com/user/signup", {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password, type }),
             });
 
             const res = await response.json();
+            console.log(res);
 
             if (response.ok) {
-
-                toast.success("User signed up successfully!", {
+                toast.success("User  signed up successfully!", {
                     position: "top-right",
                     autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
                     theme: "colored",
                 });
 
+                
+                navigate("/login");
 
+                
                 setName("");
                 setEmail("");
                 setPassword("");
                 setUserType("");
 
-                if (FetchTask) FetchTask(); 
+                if (FetchTask) FetchTask();
             } else {
-                
                 toast.error(res.message || "Signup failed!", {
                     position: "top-right",
                     autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
                     theme: "colored",
                 });
             }
@@ -65,8 +60,7 @@ function Signup({ FetchTask }) {
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
-                <form className="space-y-4">
-                    {/* Name */}
+                <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-600">Name</label>
                         <input
@@ -79,8 +73,6 @@ function Signup({ FetchTask }) {
                             required
                         />
                     </div>
-
-                    {/* Email */}
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-600">Email</label>
                         <input
@@ -93,8 +85,6 @@ function Signup({ FetchTask }) {
                             required
                         />
                     </div>
-
-                    {/* Password */}
                     <div>
                         <label htmlFor="password" className="block text-sm font-medium text-gray-600">Password</label>
                         <input
@@ -107,10 +97,8 @@ function Signup({ FetchTask }) {
                             required
                         />
                     </div>
-
-                    {/* User Type */}
                     <div>
-                        <label htmlFor="type" className="block text-sm font-medium text-gray-600">User Type</label>
+                        <label htmlFor="type" className="block text-sm font-medium text-gray-600">User  Type</label>
                         <select
                             id="type"
                             value={type}
@@ -123,34 +111,20 @@ function Signup({ FetchTask }) {
                             <option value="Elder">Elder</option>
                         </select>
                     </div>
-
-
                     <div>
-                        <Link to="/login">
-                            <button
-                                type="submit"
-                                className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                onClick={handleSubmit}>
-                                Sign Up
-                            </button>
-                        </Link>
-
+                        <button
+                            type="submit"
+                            className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                            Sign Up
+                        </button>
                     </div>
                     <div className="mt-4 text-center">
-                        <div className="-mt-[20px]" >
-                            <span className="text-sm text-gray-600">Already have an account? </span>
-                            <Link
-                                to="/login"
-                                className="text-blue-500 hover:text-blue-700 font-semibold"
-                            >
-                                Log In
-                            </Link>
-                        </div>
+                        <span className="text-sm text-gray-600">Already have an account? </span>
+                        <Link to="/login" className="text-blue-500 hover:text-blue-700 font-semibold">Log In</Link>
                     </div>
                 </form>
             </div>
-
-            {/* Toast container to display messages */}
             <ToastContainer />
         </div>
     );
