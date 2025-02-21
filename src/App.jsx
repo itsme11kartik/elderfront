@@ -15,10 +15,10 @@ function App() {
       <div>
         <Routes>
           <Route path='/' element={<Signup />} />
-          <Route path='/login' element={<Login setUsername={setUsername} setUser Type={setUserType} />} />
+          <Route path='/login' element={<Login setUsername={setUsername} setUserType={setUserType} />} />
           <Route path='/elder-home' element={<ElderHome username={username} userType={userType} />} />
-          <Route path='/family-home' element={<FamilyHome userType={userType} />} />
-          <Route path='/chat' element={<Chat username={username} />} />
+          <Route path='/family-home' element={<FamilyHome userType={userType} setUserType={setUserType} />} />
+          <Route path='/chat' element={<Chat username={username} userType={userType}/>} />
         </Routes>
       </div>
     </BrowserRouter>

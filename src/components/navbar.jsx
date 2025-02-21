@@ -11,19 +11,19 @@ function Navbar({ username, userType }) {
     navigate("/login"); // Redirect to login page
   };
 
-  // Determine the home link based on user type
-  let homeLink = "/"; // Default to root or a fallback page
+
+  let homeLink = "/"; 
   if (userType === "Family") {
     homeLink = "/family-home";
   } else if (userType === "Elder") {
     homeLink = "/elder-home";
   }
 
-  console.log("User  Type:", userType); // Debugging output
+  console.log("User Type:", userType); 
 
   return (
     <nav className="bg-gradient-to-r from-blue-800 to-blue-600 p-4 flex justify-between items-center shadow-lg">
-      {/* Left Side - Logo & Title */}
+      
       <div className="flex items-center">
         <img
           src="https://media.istockphoto.com/id/1089740228/vector/elderly-healthcare-heart-shaped-logo-nursing-home-sign.jpg?s=612x612&w=0&k=20&c=5zSiq4HL370qXBX69EtYdCZQAhSvA_9WnxEEA_rjhTM="

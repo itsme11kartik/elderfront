@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Login({ FetchTask, setUsername , setUserType }) {
+function Login({ FetchTask, setUsername , setUserType  }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ function Login({ FetchTask, setUsername , setUserType }) {
     async function handleSubmit(e) {
         e.preventDefault(); // Prevent default form submission
         try {
-            const response = await fetch("https://elderback.onrender.com/user/login", {
+            const response = await fetch("http://localhost:8000/user/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),

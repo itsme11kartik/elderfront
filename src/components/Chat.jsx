@@ -16,7 +16,7 @@ const socket = io("https://elderback.onrender.com", {
     console.error("WebSocket connection error:", err.message);
   });
 
-const Chat = ({ username }) => {
+const Chat = ({ username,userType }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -50,7 +50,7 @@ const Chat = ({ username }) => {
 
   return (
     <div className="h-screen flex flex-col">
-      <Navbar username={username} />
+      <Navbar username={username} userType={userType}/>
       <div className="flex-grow flex flex-col p-4 bg-gray-100">
         <h2 className="text-xl font-semibold text-blue-700 text-center">
           Family & Volunteer Chat
