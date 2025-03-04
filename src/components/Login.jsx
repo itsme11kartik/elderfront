@@ -3,13 +3,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Login({ FetchTask, setUsername , setUserType  }) {
+function Login({ setUsername, setUserType }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false); // Prevent multiple clicks
     const navigate = useNavigate();
 
     async function handleSubmit(e) {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
+        setLoading(true); // Start loading
+
         try {
             const response = await fetch("https://elderback.onrender.com/user/login", {
                 method: "POST",
@@ -18,45 +21,31 @@ function Login({ FetchTask, setUsername , setUserType  }) {
             });
 
             const res = await response.json();
-            console.log("Response JSON:", res);
 
             if (!response.ok) {
-                console.error("Login failed:", res.message);
-                toast.error(res.message || "Login failed!");
-                return; 
+                toast.error(res.message || "Login failed!", { position: "top-right" });
+                setLoading(false);
+                return;
             }
 
-            toast.success("Login successful!", {
-                position: "top-right",
-                autoClose: 3000,
-                theme: "colored",
-            });
-            
+            // Save user details in localStorage
+            localStorage.setItem("token", res.token);
+            localStorage.setItem("username", res.name);
+            localStorage.setItem("userType", res.type);
 
-            setUsername(res.name); // Set the username in the parent component
-            const userType = res.type; // Get user type from response
-            console.log("User  Type:", userType);
-            setUserType(userType);
+            setUsername(res.name);
+            setUserType(res.type);
 
-            // Navigate based on user type
-            if (userType === "Family") {
-                navigate("/family-home");
-            } else {
-                navigate("/elder-home");
-            }
+            toast.success("Login successful! Redirecting...", { position: "top-right", autoClose: 2000 });
 
-            // Reset form fields
-            setEmail("");
-            setPassword("");
-
-            if (FetchTask) FetchTask(); // Call FetchTask if provided
+            // Redirect after a short delay
+            setTimeout(() => {
+                navigate(res.type === "Family" ? "/family-home" : "/elder-home");
+            }, 2000);
         } catch (error) {
-            console.error("Fetch Error:", error);
-            toast.error("Something went wrong!", {
-                position: "top-right",
-                autoClose: 3000,
-                theme: "colored",
-            });
+            toast.error("Something went wrong! Please try again.", { position: "top-right" });
+        } finally {
+            setLoading(false); // Stop loading
         }
     }
 
@@ -70,10 +59,9 @@ function Login({ FetchTask, setUsername , setUserType  }) {
                         <input
                             type="email"
                             id="email"
-                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
                             required
                         />
                     </div>
@@ -82,35 +70,26 @@ function Login({ FetchTask, setUsername , setUserType  }) {
                         <input
                             type="password"
                             id="password"
-                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md"
                             required
                         />
                     </div>
-                    <div>
-                        <button
-                            type="submit"
-                            className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Log In
-                        </button>
-                    </div>
-                    <div className="mt-4 text-center">
-                        <div className="-mt-[20px]">
-                            <span className="text-sm text-gray-600">Don't have an account? </span>
-                            <Link
-                                to="/"
-                                className="text-blue-500 hover:text-blue-700 font-semibold"
-                            >
-                                Sign Up
-                            </Link>
-                        </div>
-                    </div>
+                    <button
+                        type="submit"
+                        className="w-full mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md disabled:bg-gray-400"
+                        disabled={loading}
+                    >
+                        {loading ? "Logging in..." : "Log In"}
+                    </button>
                 </form>
+                <div className="mt-4 text-center">
+                    <span className="text-sm text-gray-600">Don't have an account? </span>
+                    <Link to="/" className="text-blue-500 hover:text-blue-700 font-semibold">Sign Up</Link>
+                </div>
             </div>
-            <ToastContainer />
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
         </div>
     );
 }

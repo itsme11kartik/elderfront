@@ -8,10 +8,33 @@ function Signup({ FetchTask }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [type, setUserType] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const navigate = useNavigate();
 
+    // Password validation function
+    const validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[A-Za-z\d@$!%*?&.]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            setPasswordError("Password must be at least 8 characters, include 1 uppercase letter, 1 number, and 1 special character.");
+            return false;
+        }
+        setPasswordError("");
+        return true;
+    };
+
     async function handleSubmit(e) {
-        e.preventDefault(); 
+        e.preventDefault();
+        
+        // Check password validation
+        if (!validatePassword(password)) {
+            toast.error("Invalid password! Please follow the password rules.", {
+                position: "top-right",
+                autoClose: 3000,
+                theme: "colored",
+            });
+            return;
+        }
+
         try {
             const response = await fetch("https://elderback.onrender.com/user/signup", {
                 method: "POST",
@@ -24,16 +47,15 @@ function Signup({ FetchTask }) {
             console.log(res);
 
             if (response.ok) {
-                toast.success("User  signed up successfully!", {
+                toast.success("User signed up successfully!", {
                     position: "top-right",
                     autoClose: 3000,
                     theme: "colored",
                 });
 
-                
                 navigate("/login");
 
-                
+                // Clear input fields
                 setName("");
                 setEmail("");
                 setPassword("");
@@ -92,13 +114,17 @@ function Signup({ FetchTask }) {
                             id="password"
                             placeholder="Enter your password"
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                validatePassword(e.target.value);
+                            }}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
+                        {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
                     </div>
                     <div>
-                        <label htmlFor="type" className="block text-sm font-medium text-gray-600">User  Type</label>
+                        <label htmlFor="type" className="block text-sm font-medium text-gray-600">User Type</label>
                         <select
                             id="type"
                             value={type}
